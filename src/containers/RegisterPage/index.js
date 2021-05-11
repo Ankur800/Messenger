@@ -19,7 +19,12 @@ import { signup } from '../../actions';
 
 function Copyright() {
     return (
-        <Typography variant='body2' color='textSecondary' align='center'>
+        <Typography
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+            variant='body2'
+            color='textSecondary'
+            align='center'
+        >
             {'Copyright © '}
             <Link color='inherit' href='https://material-ui.com/'>
                 ReAnk Studio
@@ -79,7 +84,11 @@ const RegisterPage = () => {
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component='h1' variant='h5'>
+                    <Typography
+                        style={{ fontFamily: 'Montserrat, sans-serif' }}
+                        component='h1'
+                        variant='h5'
+                    >
                         Register
                     </Typography>
                     <form
@@ -150,7 +159,13 @@ const RegisterPage = () => {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href='./login' variant='body2'>
+                                <Link
+                                    style={{
+                                        fontFamily: 'Montserrat, sans-serif',
+                                    }}
+                                    href='./login'
+                                    variant='body2'
+                                >
                                     {'Already have an account? Log In'}
                                 </Link>
                             </Grid>

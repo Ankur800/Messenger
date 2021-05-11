@@ -98,3 +98,23 @@ export const signin = (user) => {
             });
     };
 };
+
+export const isLoggedInUser = () => {
+    return async (dispatch) => {
+        const loggedInUser = localStorage.getItem('user')
+            ? JSON.parse(localStorage.getItem('user'))
+            : null;
+
+        if (loggedInUser) {
+            dispatch({
+                type: `${authConstant.USER_LOGIN}_SUCCESS`,
+                payload: { user: loggedInUser },
+            });
+        } else {
+            dispatch({
+                type: `${authConstant.USER_LOGIN}_FAILURE`,
+                payload: { error: 'Login again please' },
+            });
+        }
+    };
+};
