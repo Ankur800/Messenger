@@ -1,19 +1,18 @@
 import firebase from 'firebase';
 import { authConstant } from './constants';
-const { auth } = firebase;
+const { auth, firestore } = firebase;
 
 export const signup = (user) => {
     return async (dispatch) => {
-        const db = firebase.firestore();
+        const db = firestore();
 
         dispatch({ type: `${authConstant.USER_LOGIN}_REQUEST` });
 
-        firebase
-            .auth()
+        auth()
             .createUserWithEmailAndPassword(user.email, user.password)
             .then((data) => {
                 console.log(data);
-                const currentUser = firebase.auth().currentUser;
+                const currentUser = auth().currentUser;
                 const userName = user.firstName + ' ' + user.lastName;
                 currentUser
                     .updateProfile({
@@ -27,6 +26,7 @@ export const signup = (user) => {
                                 lastName: user.lastName,
                                 uid: data.user.uid,
                                 createdAt: new Date(),
+                                isOnline: true,
                             })
                             .then(() => {
                                 // Successful
@@ -116,5 +116,28 @@ export const isLoggedInUser = () => {
                 payload: { error: 'Login again please' },
             });
         }
+    };
+};
+
+export const logout = () => {
+    return async (dispatch) => {
+        dispatch({ type: `${authConstant.USER_LOGOUT}_REQUEST` });
+
+        // Now lets logout user
+        auth()
+            .signOut()
+            .then(() => {
+                // successfully logout
+
+                localStorage.clear();
+                dispatch({ type: `${authConstant.USER_LOGOUT}_SUCCESS` });
+            })
+            .catch((error) => {
+                console.log(error);
+                dispatch({
+                    type: `${authConstant.USER_LOGOUT}_FAILURE`,
+                    payload: { error },
+                });
+            });
     };
 };

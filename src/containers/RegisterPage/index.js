@@ -13,7 +13,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
 
 import { signup } from '../../actions';
 
@@ -63,6 +64,11 @@ const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+
+    if (auth.authenticated) {
+        return <Redirect to={'/'} />;
+    }
 
     const registerUser = (e) => {
         e.preventDefault();
