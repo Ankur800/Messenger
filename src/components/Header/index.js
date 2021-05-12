@@ -5,7 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../actions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,6 +51,7 @@ const Header = (props) => {
     const classes = useStyles();
 
     const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
     return (
         <div className={classes.root}>
@@ -90,7 +92,9 @@ const Header = (props) => {
                             </Typography>
 
                             <Button
-                                onClick={props.logout}
+                                onClick={() => {
+                                    dispatch(logout());
+                                }}
                                 className={classes.register}
                                 color='inherit'
                             >
