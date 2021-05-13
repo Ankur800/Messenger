@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { signin } from '../../actions/auth.actions';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 function Copyright() {
     return (
