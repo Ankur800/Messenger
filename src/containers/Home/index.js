@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRealTimeUsers } from '../../actions';
+import {
+    getRealtimeChats,
+    getRealTimeUsers,
+    updateMessage,
+} from '../../actions';
 import Layout from '../../components/Layout';
 
 import './style.css';
@@ -27,7 +31,11 @@ const User = (props) => {
                 <span style={{ fontWeight: 500 }}>
                     {user.firstName} {user.lastName}
                 </span>
-                <span>{user.isOnline ? 'online' : 'offline'}</span>
+                <span
+                    className={
+                        user.isOnline ? 'onlineStatus' : 'onlineStatus off'
+                    }
+                ></span>
             </div>
         </div>
     );
@@ -39,6 +47,8 @@ const HomePage = () => {
     const user = useSelector((state) => state.user);
     const [chatStarted, setChatStarted] = useState(false);
     const [chatUser, setChatUser] = useState('');
+    const [message, setMessage] = useState('');
+    const [userUid, setUserUid] = useState(null);
     let unsubscribe;
 
     useEffect(() => {
@@ -63,8 +73,34 @@ const HomePage = () => {
     const initChat = (user) => {
         setChatStarted(true);
         setChatUser(`${user.firstName} ${user.lastName}`);
+        setUserUid(user.uid);
 
-        console.log(user);
+        console.log('user', user);
+
+        dispatch(getRealtimeChats({ uid_1: auth.uid, uid_2: user.uid }));
+    };
+
+    const submitMessage = (e) => {
+        const msgObj = {
+            user_uid_1: auth.uid,
+            user_uid_2: userUid,
+            message: message,
+        };
+
+        if (message != '') {
+            dispatch(updateMessage(msgObj)).then(() => {
+                setMessage('');
+            });
+        }
+
+        console.log(msgObj);
+    };
+
+    const handleKeypress = (e) => {
+        if (e.keyCode === 13 && e.shiftKey === false) {
+            e.preventDefault();
+            submitMessage();
+        }
     };
 
     return (
@@ -89,17 +125,34 @@ const HomePage = () => {
                         {chatStarted ? chatUser : ''}
                     </div>
                     <div className='messageSections'>
-                        {chatStarted ? (
-                            <div style={{ textAlign: 'left' }}>
-                                <p className='messageStyle'>Hello User</p>
-                            </div>
-                        ) : null}
+                        {chatStarted
+                            ? user.chats.map((chat, index) => (
+                                  <div
+                                      key={index}
+                                      style={{
+                                          textAlign:
+                                              chat.user_uid_1 == auth.uid
+                                                  ? 'right'
+                                                  : 'left',
+                                      }}
+                                  >
+                                      <p className='messageStyle'>
+                                          {chat.message}
+                                      </p>
+                                  </div>
+                              ))
+                            : null}
                     </div>
 
                     {chatStarted ? (
                         <div className='chatControls'>
-                            <textarea />
-                            <button>Send</button>
+                            <textarea
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                placeholder='Type a Message'
+                                onKeyDown={handleKeypress}
+                            />
+                            <button onClick={submitMessage}>Send</button>
                         </div>
                     ) : null}
                 </div>
