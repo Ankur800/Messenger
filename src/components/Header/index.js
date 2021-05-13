@@ -93,7 +93,7 @@ const Header = (props) => {
 
                             <Button
                                 onClick={() => {
-                                    dispatch(logout());
+                                    dispatch(logout(auth.uid));
                                 }}
                                 className={classes.register}
                                 color='inherit'
