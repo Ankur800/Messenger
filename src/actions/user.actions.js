@@ -85,7 +85,7 @@ export const getRealtimeChats = (user) => {
                     }
                 });
 
-                console.log(chats);
+                //console.log(chats);
             });
     };
 };

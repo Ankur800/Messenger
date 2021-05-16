@@ -6,18 +6,20 @@ import store from './store';
 
 import App from './App';
 
+require('dotenv').config();
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: 'AIzaSyDxSRTXtf8ltGYDzol_nP4bTtw94kjacYk',
-    authDomain: 'messenger-f4493.firebaseapp.com',
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL:
         'https://messenger-f4493-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'messenger-f4493',
+    projectId: process.env.REACT_APP_PROJECT_ID,
     storageBucket: 'messenger-f4493.appspot.com',
-    messagingSenderId: '659467859875',
-    appId: '1:659467859875:web:0396c965891f40b424cc16',
-    measurementId: 'G-HFKBP4WLCZ',
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(firebaseConfig);
